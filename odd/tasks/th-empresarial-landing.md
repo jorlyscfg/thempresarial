@@ -80,8 +80,13 @@ Tasks TH-001, TH-002, and TH-003 are complete. The current continuation authoriz
 - `npm run typecheck` — `tsc --noEmit` passed.
 - `npm run build` — TypeScript check and Vite v8.3.0 production build passed; 16 modules transformed; generated `dist/` assets were ignored by Git.
 - `npm audit --audit-level=high` — found 0 vulnerabilities.
-- Git scope inspection — no commits exist; status contains only `.gitignore`, `eslint.config.js`, `index.html`, `odd/`, `package-lock.json`, `package.json`, `src/`, `tsconfig.json`, and `vite.config.ts`; `git diff --check` produced no output.
+- Git scope inspection before commit — status contained only `.gitignore`, `eslint.config.js`, `index.html`, `odd/`, `package-lock.json`, `package.json`, `src/`, `tsconfig.json`, and `vite.config.ts`; staged `git diff --check` produced no output.
 - Runtime harness: N/A — this repository has no existing runtime harness; deterministic Vitest, lint, typecheck, and production build checks are applicable.
+
+## Delivery evidence
+
+- Implementation commit: `fc1ecec983bb04ca21ff6fc4c0b0d071b9892cf4` — `feat: Add TH Empresarial hospitality landing page`.
+- Branch push: confirmed on `origin/jorlyscfg/feat/th-empresarial-landing`.
 
 ## Rollback boundary
 
@@ -89,4 +94,4 @@ Remove the files created for this feature (`.gitignore`, `src/`, `index.html`, `
 
 ## Next step
 
-Return the concise implementation receipt with the verified checks, design direction/DFII, scoped files, runtime limitation, and delivery evidence. Record the delivery commit identity here after committing; merge remains intentionally pending.
+Return the concise implementation receipt with the verified checks, design direction/DFII, scoped files, runtime limitation, and delivery evidence. The branch is pushed; merge remains intentionally pending.
