@@ -308,4 +308,15 @@ describe('TH Empresarial landing page', () => {
     expect(within(carousel).getByRole('button', { name: /imagen anterior/i })).toHaveAttribute('type', 'button');
     expect(within(carousel).getByRole('button', { name: /imagen siguiente/i })).toHaveAttribute('type', 'button');
   });
+
+  test('keeps supplied carousel images fully visible instead of cropping them', () => {
+    const styles = readFileSync(resolve(process.cwd(), 'src/styles.css'), 'utf8');
+    const imageFrameRule = styles.match(/\.carousel__image-frame\s*\{[^}]*}/)?.[0] ?? '';
+    const imageRule = styles.match(/\.carousel__image-frame img\s*\{[^}]*}/)?.[0] ?? '';
+
+    expect(imageFrameRule).not.toMatch(/aspect-ratio:/);
+    expect(imageFrameRule).not.toMatch(/overflow:\s*hidden/);
+    expect(imageRule).toMatch(/height:\s*auto/);
+    expect(imageRule).toMatch(/object-fit:\s*contain/);
+  });
 });

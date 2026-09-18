@@ -35,7 +35,7 @@ The page should make TH Empresarial's real service categories immediately legibl
 - The authentic TH Empresarial logo and sampled brand colors (`#144F7C`, `#9FD9F7`, `#DCDA17`, white) take precedence over the previous authored navy/cyan/lime palette.
 - The supplied Hotel Alert screenshots are authorized demo material and may be published as provided; label them as functional reference imagery and never present their demo room numbers, queues, timestamps, or identifiers as production evidence.
 - Use only the exact WhatsApp URL supplied by the user and the two authorized trust claims.
-- Service carousels must have only manual side previous/next arrow controls (`‹` and `›`), keyboard support, visible focus, `aria-live="polite"`, active-slide feedback, stable image dimensions, lazy inactive images, and no forced autoplay; pagination dots must not be interactive controls.
+- Service carousels must have only manual side previous/next arrow controls (`‹` and `›`), keyboard support, visible focus, `aria-live="polite"`, active-slide feedback, stable image dimensions, complete supplied image visibility without forced cropping, lazy inactive images, and no forced autoplay; pagination dots must not be interactive controls.
 - Work directly on `jorlyscfg/feat/th-empresarial-landing`; commit `177011e166de0822d887e320b0e9dbd01f7a21f1` records the current work, branch push remains separate from merge.
 
 ## Design direction and DFII
@@ -64,6 +64,7 @@ The page should make TH Empresarial's real service categories immediately legibl
 9. Hotel Alert is described as a local hotel-request platform connecting guest tablets with operational teams, with accurate capabilities and explicit non-claims.
 10. Hotel Alert includes an accessible carousel using the supplied demo screenshots as functional reference imagery.
 11. Every carousel exposes only side `‹`/`›` arrow controls; no pagination-dot buttons are rendered.
+12. Carousel image frames preserve the complete supplied asset without a forced crop.
 
 ## Applicable checks
 
@@ -86,10 +87,11 @@ The page should make TH Empresarial's real service categories immediately legibl
 - [x] **TH-009 — Run full verification and record the redesign delivery evidence**
 - [x] **TH-010 — Add the Hotel Alert demo screenshot carousel** (completed with five labelled functional-reference screenshots)
 - [x] **TH-011 — Simplify every carousel to side-only arrow controls** (completed with keyboard-accessible `‹`/`›` controls and no pagination buttons)
+- [x] **TH-012 — Preserve the complete supplied image inside every carousel frame** (completed by removing the forced frame crop and adding regression coverage)
 
 ## Progress
 
-Tasks TH-001 through TH-011 are implemented locally. TH-010 adds the supplied Hotel Alert demo screenshots as labelled functional reference imagery, and TH-011 simplifies every carousel to side-only arrow controls. Verification is complete and the work-unit commit is `584a1cd`; push remains pending explicit remote authorization. Merge remains a separate user-owned decision.
+Tasks TH-001 through TH-012 are implemented locally. TH-010 adds the supplied Hotel Alert demo screenshots as labelled functional reference imagery, TH-011 simplifies every carousel to side-only arrow controls, and TH-012 preserves each supplied image without forced cropping. Verification is complete and the TH-012 work-unit commit is pending local commit creation; push remains pending explicit remote authorization. Merge remains a separate user-owned decision.
 
 ## Verification evidence
 
@@ -144,6 +146,14 @@ Tasks TH-001 through TH-011 are implemented locally. TH-010 adds the supplied Ho
 - TH-010/TH-011 worktree inspection: only the task document, three source files, and five intended public PNGs are changed/untracked; raw `recuersos/` remains untracked and untouched.
 - Native risk assessment: `gentle-ai review mode status` reported clone-local RDD off; `gentle-ai review assess --cwd ... --json` could not classify the candidate because untracked assets require an explicit inventory, so the assessment is recorded as unassessable rather than treated as approval.
 - Visual browser preview remains unavailable because the Vite dev server hits `EMFILE`; deterministic checks above passed.
+- TH-012 RED: `npm test -- --run -t "keeps supplied carousel images fully visible instead of cropping them"` — observed the expected failure against the forced `16 / 10` frame ratio.
+- TH-012 GREEN: the same focused test passed after removing the fixed frame ratio and using natural image height with `object-fit: contain`.
+- TH-012 fresh verification: `npm test -- --run` — 1 test file and 11 tests passed.
+- TH-012 fresh verification: `rtk lint` — ESLint reported `No issues found`.
+- TH-012 fresh verification: `rtk npm run typecheck` — `tsc --noEmit` passed.
+- TH-012 fresh verification: `rtk npm run build` — TypeScript check and Vite v8.3.0 production build passed; 16 modules transformed.
+- TH-012 fresh verification: `npm audit --audit-level=high` — found 0 vulnerabilities.
+- TH-012 fresh verification: `rtk git diff --check` — produced no output.
 
 ## Delivery evidence
 
@@ -161,4 +171,4 @@ Remove the files created for this feature (`.gitignore`, `src/`, `index.html`, `
 
 ## Next step
 
-Local implementation, verification, and the TH-010/TH-011 work-unit commit are complete. Next action requiring user authorization: push the local branch to `origin/jorlyscfg/feat/th-empresarial-landing`; merge remains a separate user-owned decision.
+Create the local TH-012 work-unit commit. The next action requiring user authorization after that is pushing the local branch to `origin/jorlyscfg/feat/th-empresarial-landing`; merge remains a separate user-owned decision.
