@@ -104,6 +104,7 @@ DP-001 through DP-003 and the clarified DP-005 Compose entrypoint are implemente
 - Prior task-record update commit: `59ccc67` (`docs(odd): Record Dokploy delivery`).
 - Clarified Compose work-unit commit: `5936b81` (`build(deploy): Add Dokploy Compose entrypoint`).
 - DP-006 fix commit: `8f993c7` (`fix(deploy): Install build dependencies in Dokploy image`).
+- DP-007 fix commit: `26390ba` (`fix(deploy): Restore Dokploy build output permissions`).
 
 ## Delivery and rollback boundary
 
