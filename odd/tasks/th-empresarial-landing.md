@@ -32,7 +32,7 @@ The page should make TH Empresarial's real service categories immediately legibl
 - The authentic TH Empresarial logo and blue/cyan identity take precedence over the initial authored palette where the supplied assets provide evidence.
 - Do not publish Facebook captures or operational screenshots with room numbers, queues, timestamps, or identifiers. User-supplied vendor/product graphics may be used as clearly labelled reference imagery where they explain a service category.
 - Use only the exact WhatsApp URL supplied by the user and the two authorized trust claims.
-- Work directly on `jorlyscfg/feat/th-empresarial-landing`; no commit or branch push was performed in this continuation, and merge remains separate.
+- Work directly on `jorlyscfg/feat/th-empresarial-landing`; commit `177011e166de0822d887e320b0e9dbd01f7a21f1` records the current work, branch push remains separate from merge.
 
 ## Design direction and DFII
 
@@ -75,7 +75,7 @@ The page should make TH Empresarial's real service categories immediately legibl
 
 ## Progress
 
-Tasks TH-001 through TH-005 are implemented. Owner feedback was addressed by correcting contrast, replacing vague or invented copy, using the supplied imagery that explains communications, IT, electronic security, access control, surveillance, solar, and hotel operations, and removing the fabricated console/metrics. Fresh checks pass; no commit or branch push was performed in this continuation. Merge remains a separate user-owned decision.
+Tasks TH-001 through TH-005 are implemented. Owner feedback was addressed by correcting contrast, replacing vague or invented copy, using the supplied imagery that explains communications, IT, electronic security, access control, surveillance, solar, and hotel operations, and removing the fabricated console/metrics. Fresh checks pass; commit `177011e166de0822d887e320b0e9dbd01f7a21f1` was created. Merge remains a separate user-owned decision.
 
 ## Verification evidence
 
@@ -111,7 +111,8 @@ Tasks TH-001 through TH-005 are implemented. Owner feedback was addressed by cor
 
 - Historical implementation commit: `fc1ecec983bb04ca21ff6fc4c0b0d071b9892cf4` — `feat: Add TH Empresarial hospitality landing page`; it predates the current TH-004/TH-005 corrections.
 - Historical branch push: confirmed on `origin/jorlyscfg/feat/th-empresarial-landing`.
-- Current continuation: no new commit or branch push was performed.
+- Current continuation commit: `177011e166de0822d887e320b0e9dbd01f7a21f1` — `feat: Rework TH Empresarial landing evidence catalog`.
+- Current continuation branch push: pending; raw `recuersos/` remains untracked and excluded.
 
 ## Rollback boundary
 
@@ -119,4 +120,4 @@ Remove the files created for this feature (`.gitignore`, `src/`, `index.html`, `
 
 ## Next step
 
-TH-004 and TH-005 implementation and verification are complete. The next step is a scoped commit and branch push; merge remains a separate user-owned decision.
+TH-004 and TH-005 implementation, verification, and scoped commit are complete. The next step is to push the feature branch; merge remains a separate user-owned decision.
