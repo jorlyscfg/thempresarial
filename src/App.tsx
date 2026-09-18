@@ -228,6 +228,56 @@ const serviceCarousels: readonly ServiceCarouselDefinition[] = [
   },
 ];
 
+const hotelAlertCarousel: ServiceCarouselDefinition = {
+  id: 'hotel-alert',
+  number: '05',
+  title: 'Hotel Alert',
+  description: 'Capturas demo de referencia funcional del flujo local; no constituyen evidencia de una instalación en producción.',
+  tone: 'yellow',
+  assets: [
+    {
+      title: 'Inicio de sesión del administrador',
+      caption: 'Captura demo · configuración para vincular una estación con una habitación o área.',
+      src: '/assets/th-empresarial/hotel-alert-admin-login.png',
+      alt: 'Pantalla demo de inicio de sesión del administrador de Hotel Alert',
+      width: 1279,
+      height: 687,
+    },
+    {
+      title: 'Resumen del centro de control',
+      caption: 'Captura demo · resumen de solicitudes, estaciones y actividad reciente.',
+      src: '/assets/th-empresarial/hotel-alert-control-center.png',
+      alt: 'Resumen del centro de control de Hotel Alert con solicitudes y estaciones',
+      width: 1633,
+      height: 990,
+    },
+    {
+      title: 'Cola de solicitudes en vivo',
+      caption: 'Captura demo · cola filtrable por fecha, estado, habitación y servicio.',
+      src: '/assets/th-empresarial/hotel-alert-live-queue.png',
+      alt: 'Cola de solicitudes en vivo de Hotel Alert con filtros y estados',
+      width: 1608,
+      height: 985,
+    },
+    {
+      title: 'Selección de áreas para la habitación',
+      caption: 'Captura demo · selección de áreas operativas desde una tableta de habitación.',
+      src: '/assets/th-empresarial/hotel-alert-room-areas.png',
+      alt: 'Selección de áreas para la habitación en una tableta demo de Hotel Alert',
+      width: 1019,
+      height: 773,
+    },
+    {
+      title: 'Solicitud de asistencia de recepción',
+      caption: 'Captura demo · servicios disponibles dentro del área de recepción.',
+      src: '/assets/th-empresarial/hotel-alert-service-request.png',
+      alt: 'Solicitud de asistencia de recepción en una ventana demo de Hotel Alert',
+      width: 1017,
+      height: 769,
+    },
+  ],
+};
+
 const capabilityRows = [
   {
     number: '01',
@@ -383,51 +433,37 @@ function ServiceCarousel({ service }: ServiceCarouselProps): ReactElement {
               <AssetImage asset={asset} priority={index === activeIndex} />
             </div>
             <figcaption>
-              <span>Imagen de referencia</span>
+              <span>{service.id === 'hotel-alert' ? 'Referencia funcional' : 'Imagen de referencia'}</span>
               <strong>{asset.title}</strong>
               <small>{asset.caption}</small>
             </figcaption>
           </figure>
         ))}
-      </div>
-
-      <div className="carousel__footer">
         <div className="carousel__controls">
           <button
             type="button"
-            className="carousel__control"
+            className="carousel__control carousel__control--previous"
             aria-label={`Imagen anterior de ${service.title}`}
             aria-controls={stageId}
             onClick={() => moveSlide(-1)}
           >
-            ←
+            ‹
           </button>
           <button
             type="button"
-            className="carousel__control"
+            className="carousel__control carousel__control--next"
             aria-label={`Imagen siguiente de ${service.title}`}
             aria-controls={stageId}
             onClick={() => moveSlide(1)}
           >
-            →
+            ›
           </button>
         </div>
+      </div>
 
+      <div className="carousel__footer">
         <div className="carousel__status" role="status" aria-live="polite" aria-atomic="true">
           Imagen {activeIndex + 1} de {service.assets.length}: {activeAsset.title}
-        </div>
-
-        <div className="carousel__indicators" aria-label={`Imágenes de ${service.title}`}>
-          {service.assets.map((asset, index) => (
-            <button
-              type="button"
-              className="carousel__indicator"
-              key={asset.src}
-              aria-label={`Ver imagen ${index + 1} de ${service.title}`}
-              aria-current={index === activeIndex ? 'true' : undefined}
-              onClick={() => setActiveIndex(index)}
-            />
-          ))}
         </div>
       </div>
     </section>
@@ -627,6 +663,10 @@ function App(): ReactElement {
                   <span>Historial auditable</span>
                 </div>
               </div>
+            </div>
+
+            <div className="hotel-alert__gallery">
+              <ServiceCarousel service={hotelAlertCarousel} />
             </div>
 
             <div className="hotel-alert__technical">

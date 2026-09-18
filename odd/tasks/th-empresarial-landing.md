@@ -22,6 +22,7 @@ The page should make TH Empresarial's real service categories immediately legibl
 - Use every unique, publishable product or installation image from `recuersos/` once in a service-specific carousel; do not repeat duplicate files as separate slides.
 - Prefer real supplied service/product imagery over fabricated dashboards, consoles, metrics, or status indicators.
 - Add an accurate Hotel Alert product section describing the local hotel-request platform, guest tablet, operational routing, configurable catalogs, service states, audit history, real-time synchronization, interruption recovery, and local Node.js/React/TypeScript/SQLite/Socket.IO deployment.
+- Add a Hotel Alert image carousel using the supplied demo screenshots as provided, clearly labelled as functional reference imagery rather than proof of a production installation.
 - Write only claims supported by the supplied material or explicitly authorized by the owner; label product references and promotional graphics as references rather than proof of deployment.
 - Do not present Hotel Alert as SaaS/cloud, a native mobile app, PMS/payment integration, or guaranteed 100% offline service; do not add a backend, auth, CMS, payments, speculative integrations, unverified claims, or stock-photo dependency.
 
@@ -32,9 +33,9 @@ The page should make TH Empresarial's real service categories immediately legibl
 - Use a distinctive display font and readable body font; do not use Inter, Roboto, Arial, or system-only defaults.
 - The visual anchor is the supplied TH Empresarial imagery and an evidence-led service catalog, not a fabricated dashboard.
 - The authentic TH Empresarial logo and sampled brand colors (`#144F7C`, `#9FD9F7`, `#DCDA17`, white) take precedence over the previous authored navy/cyan/lime palette.
-- Do not publish Facebook captures or operational screenshots with room numbers, queues, timestamps, or identifiers. User-supplied vendor/product graphics may be used as clearly labelled reference imagery where they explain a service category.
+- The supplied Hotel Alert screenshots are authorized demo material and may be published as provided; label them as functional reference imagery and never present their demo room numbers, queues, timestamps, or identifiers as production evidence.
 - Use only the exact WhatsApp URL supplied by the user and the two authorized trust claims.
-- Service carousels must have manual previous/next controls, keyboard support, visible focus, `aria-live="polite"`, active-slide indication, stable image dimensions, lazy inactive images, and no forced autoplay.
+- Service carousels must have only manual side previous/next arrow controls (`‹` and `›`), keyboard support, visible focus, `aria-live="polite"`, active-slide feedback, stable image dimensions, lazy inactive images, and no forced autoplay; pagination dots must not be interactive controls.
 - Work directly on `jorlyscfg/feat/th-empresarial-landing`; commit `177011e166de0822d887e320b0e9dbd01f7a21f1` records the current work, branch push remains separate from merge.
 
 ## Design direction and DFII
@@ -61,6 +62,8 @@ The page should make TH Empresarial's real service categories immediately legibl
 7. The specified test, lint, typecheck, and build commands exist and pass after implementation.
 8. Each publishable service category has a dedicated accessible carousel using every unique mapped image without exposing private operational screenshots.
 9. Hotel Alert is described as a local hotel-request platform connecting guest tablets with operational teams, with accurate capabilities and explicit non-claims.
+10. Hotel Alert includes an accessible carousel using the supplied demo screenshots as functional reference imagery.
+11. Every carousel exposes only side `‹`/`›` arrow controls; no pagination-dot buttons are rendered.
 
 ## Applicable checks
 
@@ -81,10 +84,12 @@ The page should make TH Empresarial's real service categories immediately legibl
 - [x] **TH-007 — Implement accessible service-specific image carousels from all unique publishable assets**
 - [x] **TH-008 — Add the accurate Hotel Alert product story and operational flow**
 - [x] **TH-009 — Run full verification and record the redesign delivery evidence**
+- [x] **TH-010 — Add the Hotel Alert demo screenshot carousel** (completed with five labelled functional-reference screenshots)
+- [x] **TH-011 — Simplify every carousel to side-only arrow controls** (completed with keyboard-accessible `‹`/`›` controls and no pagination buttons)
 
 ## Progress
 
-Tasks TH-001 through TH-009 are implemented. The owner accepted a second redesign direction: compact industrial-editorial composition, logo-derived colors, service-specific carousels using every unique publishable image, and an accurate Hotel Alert platform section. The redesign is committed locally; push remains pending explicit remote authorization. Merge remains a separate user-owned decision.
+Tasks TH-001 through TH-011 are implemented locally. TH-010 adds the supplied Hotel Alert demo screenshots as labelled functional reference imagery, and TH-011 simplifies every carousel to side-only arrow controls. Verification is complete; the new work-unit commit is pending. Push remains pending explicit remote authorization. Merge remains a separate user-owned decision.
 
 ## Verification evidence
 
@@ -128,6 +133,17 @@ Tasks TH-001 through TH-009 are implemented. The owner accepted a second redesig
 - Independent candidate verification confirmed all 20 published asset references exist with declared dimensions, no private hotel capture is referenced, and no unexpected generated file exists under `recuersos/`; visual browser preview remains unavailable because the dev server hits `EMFILE`.
 - Parent spot check: `npm test -- --run` — 1 test file and 9 tests passed after task-document reconciliation.
 - CodeGraph maintenance: `codegraph sync` — synced 2 changed files; the index is current for subsequent structural queries.
+- TH-010/TH-011 independent verification: five Hotel Alert PNGs are present under `public/assets/th-empresarial/`, byte-match their supplied raw captures, and match the declared dimensions `1279×687`, `1633×990`, `1608×985`, `1019×773`, and `1017×769`.
+- TH-010/TH-011 independent verification: every carousel exposes exactly two native buttons containing `‹` and `›`; keyboard ArrowLeft/ArrowRight, visible focus, `aria-controls`, active-slide status, and `aria-live="polite"` remain present; no pagination indicators remain.
+- TH-010/TH-011 independent verification: `npm test -- --run` — 1 test file and 10 tests passed.
+- TH-010/TH-011 independent verification: `npm run lint` — exit 0.
+- TH-010/TH-011 independent verification: `npx tsc --noEmit` — exit 0.
+- TH-010/TH-011 independent verification: `npm run build` — exit 0; Vite transformed 16 modules.
+- TH-010/TH-011 independent verification: `npm audit --audit-level=high` — found 0 vulnerabilities.
+- TH-010/TH-011 independent verification: `git diff --check` — produced no output.
+- TH-010/TH-011 worktree inspection: only the task document, three source files, and five intended public PNGs are changed/untracked; raw `recuersos/` remains untracked and untouched.
+- Native risk assessment: `gentle-ai review mode status` reported clone-local RDD off; `gentle-ai review assess --cwd ... --json` could not classify the candidate because untracked assets require an explicit inventory, so the assessment is recorded as unassessable rather than treated as approval.
+- Visual browser preview remains unavailable because the Vite dev server hits `EMFILE`; deterministic checks above passed.
 
 ## Delivery evidence
 
@@ -144,4 +160,4 @@ Remove the files created for this feature (`.gitignore`, `src/`, `index.html`, `
 
 ## Next step
 
-Local implementation and verification are complete. Next action requiring user authorization: push `fa342d2` to `origin/jorlyscfg/feat/th-empresarial-landing`; merge remains a separate user-owned decision.
+Local implementation and verification are complete. Next action: create the TH-010/TH-011 work-unit commit and record its identity here; push remains a separate user-owned remote operation and merge remains a separate user-owned decision.

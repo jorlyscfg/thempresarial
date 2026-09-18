@@ -572,6 +572,7 @@ a:focus-visible,
 }
 
 .carousel__stage {
+  position: relative;
   display: grid;
   overflow: hidden;
   margin-top: 19px;
@@ -645,19 +646,21 @@ a:focus-visible,
 }
 
 .carousel__footer {
-  display: grid;
-  grid-template-columns: auto minmax(110px, 1fr) minmax(0, 1fr);
-  gap: 14px;
-  align-items: center;
+  display: flex;
+  justify-content: flex-end;
   margin-top: 15px;
 }
 
 .carousel__controls {
-  display: flex;
-  gap: 5px;
+  position: absolute;
+  z-index: 2;
+  inset: 0 0 92px;
+  pointer-events: none;
 }
 
 .carousel__control {
+  position: absolute;
+  top: 50%;
   display: grid;
   width: 34px;
   height: 34px;
@@ -668,6 +671,16 @@ a:focus-visible,
   border: 1px solid var(--line);
   font-size: 18px;
   line-height: 1;
+  pointer-events: auto;
+  transform: translateY(-50%);
+}
+
+.carousel__control--previous {
+  left: 8px;
+}
+
+.carousel__control--next {
+  right: 8px;
 }
 
 .carousel__control:hover {
@@ -684,55 +697,6 @@ a:focus-visible,
 
 .service-carousel--ink .carousel__status {
   color: var(--muted-on-dark);
-}
-
-.carousel__indicators {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 5px;
-}
-
-.carousel__indicator {
-  display: grid;
-  width: 44px;
-  min-width: 44px;
-  height: 44px;
-  min-height: 44px;
-  place-items: center;
-  padding: 0;
-  cursor: pointer;
-  background: transparent;
-  border: 1px solid transparent;
-}
-
-.carousel__indicator::before {
-  width: 8px;
-  height: 8px;
-  content: '';
-  background: var(--line);
-  border: 1px solid var(--line);
-}
-
-.carousel__indicator[aria-current='true']::before {
-  width: 24px;
-  background: var(--brand-yellow);
-  border-color: var(--brand-yellow);
-}
-
-.service-carousel--ink .carousel__indicator {
-  background: transparent;
-  border-color: transparent;
-}
-
-.service-carousel--ink .carousel__indicator::before {
-  background: var(--muted-on-dark);
-  border-color: var(--muted-on-dark);
-}
-
-.service-carousel--ink .carousel__indicator[aria-current='true']::before {
-  background: var(--brand-yellow);
-  border-color: var(--brand-yellow);
 }
 
 .hotel-alert {
@@ -891,6 +855,16 @@ a:focus-visible,
 .hotel-alert__technical small {
   color: var(--muted-on-dark);
   font-size: 10px;
+}
+
+.hotel-alert__gallery {
+  margin-top: 48px;
+}
+
+.hotel-alert__gallery .service-carousel {
+  background: var(--surface-warm);
+  border-color: var(--line);
+  border-top-color: var(--brand-yellow);
 }
 
 .approach-section {
@@ -1346,17 +1320,8 @@ a:focus-visible,
     font-size: 26px;
   }
 
-  .carousel__footer {
-    grid-template-columns: auto minmax(0, 1fr);
-  }
-
   .carousel__status {
     text-align: right;
-  }
-
-  .carousel__indicators {
-    grid-column: 1 / -1;
-    justify-content: flex-start;
   }
 
   .hotel-alert > .section-shell {

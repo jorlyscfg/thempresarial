@@ -168,10 +168,7 @@ describe('TH Empresarial landing page', () => {
     fireEvent.click(within(accessCarousel).getByRole('button', { name: /imagen siguiente/i }));
 
     expect(within(accessCarousel).getByRole('status')).toHaveTextContent(/2 de/i);
-    expect(within(accessCarousel).getByRole('button', { name: /ver imagen 2 de/i })).toHaveAttribute(
-      'aria-current',
-      'true',
-    );
+    expect(within(accessCarousel).queryAllByRole('button', { name: /ver imagen/i })).toHaveLength(0);
     expect(screen.getByRole('region', { name: /galería de comunicación e IT/i })).toBeInTheDocument();
     expect(screen.getByRole('region', { name: /galería de videovigilancia/i })).toBeInTheDocument();
     expect(screen.getByRole('region', { name: /galería de energía solar/i })).toBeInTheDocument();
@@ -185,7 +182,7 @@ describe('TH Empresarial landing page', () => {
 
     render(<App />);
 
-    expect(screen.getByRole('heading', { name: /Hotel Alert/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 2, name: /Hotel Alert: un camino claro/i })).toBeInTheDocument();
     expect(screen.getByText(/plataforma local de solicitudes hoteleras/i)).toBeInTheDocument();
     expect(screen.getByText(/tabletas de habitación/i)).toBeInTheDocument();
     expect(screen.getByText(/room service, alimentos y bebidas, limpieza, toallas, mantenimiento, desayunos y bebidas/i)).toBeInTheDocument();
@@ -206,7 +203,7 @@ describe('TH Empresarial landing page', () => {
     expect(screen.queryByText(/Docker/i)).not.toBeInTheDocument();
   });
 
-  test('gives carousel indicators a comfortable accessible hit area', () => {
+  test('publishes Hotel Alert demo screenshots as labelled functional reference imagery', () => {
     const App = loadApp();
 
     expect(App).not.toBeNull();
@@ -214,27 +211,84 @@ describe('TH Empresarial landing page', () => {
 
     render(<App />);
 
-    const carousel = screen.getByRole('region', { name: /galería de control de acceso/i });
-    const indicators = within(carousel).getAllByRole('button', { name: /ver imagen/i });
+    const carousel = screen.getByRole('region', { name: /galería de hotel alert/i });
+    expect(carousel).toHaveTextContent(/referencia funcional/i);
+    expect(carousel).toHaveTextContent(/no constituyen evidencia de una instalación en producción/i);
 
-    expect(indicators.length).toBeGreaterThan(1);
-    indicators.forEach((indicator) => {
-      expect(indicator).toHaveAttribute('type', 'button');
+    const suppliedAssets = [
+      {
+        name: /inicio de sesión del administrador/i,
+        src: '/assets/th-empresarial/hotel-alert-admin-login.png',
+        width: '1279',
+        height: '687',
+      },
+      {
+        name: /resumen del centro de control/i,
+        src: '/assets/th-empresarial/hotel-alert-control-center.png',
+        width: '1633',
+        height: '990',
+      },
+      {
+        name: /cola de solicitudes en vivo/i,
+        src: '/assets/th-empresarial/hotel-alert-live-queue.png',
+        width: '1608',
+        height: '985',
+      },
+      {
+        name: /selección de áreas para la habitación/i,
+        src: '/assets/th-empresarial/hotel-alert-room-areas.png',
+        width: '1019',
+        height: '773',
+      },
+      {
+        name: /solicitud de asistencia de recepción/i,
+        src: '/assets/th-empresarial/hotel-alert-service-request.png',
+        width: '1017',
+        height: '769',
+      },
+    ];
+
+    expect(within(carousel).getAllByRole('img', { hidden: true })).toHaveLength(suppliedAssets.length);
+    suppliedAssets.forEach(({ name, src, width, height }) => {
+      const image = within(carousel).getByRole('img', { name, hidden: true });
+      expect(image).toHaveAttribute('src', src);
+      expect(image).toHaveAttribute('width', width);
+      expect(image).toHaveAttribute('height', height);
+    });
+  });
+
+  test('uses only side arrow controls for every service carousel', () => {
+    const App = loadApp();
+
+    expect(App).not.toBeNull();
+    if (!App) return;
+
+    render(<App />);
+
+    const carousels = screen.getAllByRole('region').filter((region) =>
+      /^Galería de /i.test(region.getAttribute('aria-label') ?? ''),
+    );
+
+    expect(carousels).toHaveLength(5);
+    carousels.forEach((carousel) => {
+      const controls = within(carousel).getAllByRole('button');
+      expect(controls).toHaveLength(2);
+      expect(controls.map((control) => control.textContent?.trim())).toEqual(['‹', '›']);
+      expect(controls[0]).toHaveAttribute('aria-controls', expect.stringContaining('-carousel-stage'));
+      expect(controls[1]).toHaveAttribute('aria-controls', expect.stringContaining('-carousel-stage'));
+      expect(within(carousel).queryAllByRole('button', { name: /ver imagen/i })).toHaveLength(0);
     });
 
     const styles = readFileSync(resolve(process.cwd(), 'src/styles.css'), 'utf8');
-    const indicatorRule = styles.match(/\.carousel__indicator\s*\{[^}]*}/)?.[0] ?? '';
-    const indicatorDotRule = styles.match(/\.carousel__indicator::before\s*\{[^}]*}/)?.[0] ?? '';
+    expect(styles).not.toMatch(/\.carousel__indicator/);
 
-    expect(indicatorRule).toMatch(/min-width:\s*44px/);
-    expect(indicatorRule).toMatch(/min-height:\s*44px/);
-    expect(indicatorDotRule).toMatch(/width:\s*8px/);
-    expect(indicatorDotRule).toMatch(/height:\s*8px/);
+    const stageRule = styles.match(/\.carousel__stage\s*\{[^}]*}/)?.[0] ?? '';
+    const previousControlRule = styles.match(/\.carousel__control--previous\s*\{[^}]*}/)?.[0] ?? '';
+    const nextControlRule = styles.match(/\.carousel__control--next\s*\{[^}]*}/)?.[0] ?? '';
 
-    indicators[1].focus();
-    expect(indicators[1]).toHaveFocus();
-    fireEvent.click(indicators[1]);
-    expect(within(carousel).getByRole('status')).toHaveTextContent(/2 de/i);
+    expect(stageRule).toMatch(/position:\s*relative/);
+    expect(previousControlRule).toMatch(/left:\s*8px/);
+    expect(nextControlRule).toMatch(/right:\s*8px/);
   });
 
   test('keeps carousel controls keyboard reachable and gives the live region an accessible contract', () => {
