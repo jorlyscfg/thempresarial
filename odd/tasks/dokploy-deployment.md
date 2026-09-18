@@ -73,6 +73,7 @@ DP-001 through DP-003 are implemented locally. Existing application files and th
 - `git diff --check` — exit 0; no whitespace errors.
 - Docker is installed at `/usr/bin/docker`, but `docker build -t th-empresarial-dokploy:local .` could not reach `/var/run/docker.sock` because of permission denied. No image build or container smoke test was observed.
 - Pre-commit scope inspection showed only the six intended deployment/task files plus the pre-existing untracked `recuersos/` directory; `recuersos/` remained untouched.
+- Local work-unit commit: `a46cc96` (`build(deploy): Prepare Vite app for Dokploy`).
 
 ## Delivery and rollback boundary
 
