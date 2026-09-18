@@ -95,11 +95,11 @@ The page should make TH Empresarial's real service categories immediately legibl
 - [x] **TH-012 — Preserve the complete supplied image inside every carousel frame** (completed by removing the forced frame crop and adding regression coverage)
 - [x] **TH-013 — Size carousel stages from the active slide** (completed by taking inactive slides out of flow and adding regression coverage)
 - [x] **TH-014 — Keep service carousel card heights content-driven** (completed with `max-content` grid rows, start alignment, and regression coverage)
-- [x] **TH-015 — Use native masonry rows for the desktop carousel grid** (completed with progressive CSS masonry and regression coverage)
+- [x] **TH-015 — Use a supported packed Masonry layout across all viewport sizes** (reopened after owner feedback; completed with CSS multi-column flow and regression coverage)
 
 ## Progress
 
-Tasks TH-001 through TH-015 are implemented locally. TH-010 adds the supplied Hotel Alert demo screenshots as labelled functional reference imagery, TH-011 simplifies every carousel to side-only arrow controls, TH-012 preserves each supplied image without forced cropping, TH-013 sizes each stage from its active slide, TH-014 prevents the parent grid from stretching cards to the tallest row item, and TH-015 opts the desktop grid into native CSS masonry with a fallback. Verification is complete and the TH-015 work-unit commit is `9273ff5`; push remains pending explicit remote authorization. Merge remains a separate user-owned decision.
+Tasks TH-001 through TH-015 are implemented locally. TH-010 adds the supplied Hotel Alert demo screenshots as labelled functional reference imagery, TH-011 simplifies every carousel to side-only arrow controls, TH-012 preserves each supplied image without forced cropping, TH-013 sizes each stage from its active slide, TH-014 prevents the parent grid from stretching cards to the tallest row item, and TH-015 now uses supported CSS multi-column flow to pack carousel cards on desktop and one column without explicit sibling spacing on mobile. Verification is complete and the TH-015 correction work-unit commit is `52034a4`; push remains pending explicit remote authorization. Merge remains a separate user-owned decision.
 
 ## Verification evidence
 
@@ -184,6 +184,14 @@ Tasks TH-001 through TH-015 are implemented locally. TH-010 adds the supplied Ho
 - TH-015 fresh verification: `rtk npm run typecheck` — `tsc --noEmit` passed.
 - TH-015 fresh verification: `rtk npm run build` — TypeScript check and Vite v8.3.0 production build passed; 16 modules transformed.
 - TH-015 fresh verification: `rtk git diff --check` — produced no output.
+- Owner feedback reopened TH-015 because native `grid-template-rows: masonry` did not remove the visible spacing in the target browsers; the ordinary Grid fallback still created row-sized gaps, and the mobile sibling margin created explicit spacing.
+- TH-015 correction RED/GREEN: the delegated writer observed two focused CSS regression failures before the change and two passes after replacing the unsupported Grid fallback with multi-column flow.
+- TH-015 correction fresh verification: `npm test -- --run` — 1 test file and 14 tests passed.
+- TH-015 correction fresh verification: `rtk lint` — ESLint reported `No issues found`.
+- TH-015 correction fresh verification: `rtk npm run typecheck` — `tsc --noEmit` passed.
+- TH-015 correction fresh verification: `rtk npm run build` — TypeScript check and Vite v8.3.0 production build passed; 16 modules transformed.
+- TH-015 correction fresh verification: `rtk git diff --check` — produced no output.
+- Independent correction verification confirmed no remaining carousel row-track declarations or sibling spacing rules; carousel sizing, complete images, keyboard controls, live status, and responsive order remain unchanged. Browser geometry remains unverified because the Vite preview hits `EMFILE`.
 
 ## Delivery evidence
 
@@ -197,6 +205,7 @@ Tasks TH-001 through TH-015 are implemented locally. TH-010 adds the supplied Ho
 - TH-013 work-unit commit: `c935bdf` — `fix(landing): Size carousel stage to active slide`.
 - TH-014 work-unit commit: `485c6f5` — `fix(landing): Keep carousel cards content-sized`.
 - TH-015 work-unit commit: `9273ff5` — `feat(landing): Use masonry carousel grid`.
+- TH-015 correction work-unit commit: `52034a4` — `fix(landing): Pack carousel cards across viewports`.
 - The current branch contains local commits ahead of `origin/jorlyscfg/feat/th-empresarial-landing`; push has not been performed because remote operation authorization for this redesign is still pending.
 
 ## Rollback boundary
@@ -205,4 +214,4 @@ Remove the files created for this feature (`.gitignore`, `src/`, `index.html`, `
 
 ## Next step
 
-The TH-015 work-unit commit is complete locally. The next action requiring user authorization is pushing the local branch to `origin/jorlyscfg/feat/th-empresarial-landing`; merge remains a separate user-owned decision.
+The TH-015 correction work-unit commit is complete locally. The next action requiring user authorization is pushing the local branch to `origin/jorlyscfg/feat/th-empresarial-landing`; merge remains a separate user-owned decision.
