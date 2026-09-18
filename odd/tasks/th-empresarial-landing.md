@@ -96,7 +96,7 @@ The page should make TH Empresarial's real service categories immediately legibl
 
 ## Progress
 
-Tasks TH-001 through TH-014 are implemented locally. TH-010 adds the supplied Hotel Alert demo screenshots as labelled functional reference imagery, TH-011 simplifies every carousel to side-only arrow controls, TH-012 preserves each supplied image without forced cropping, TH-013 sizes each stage from its active slide, and TH-014 prevents the parent grid from stretching cards to the tallest row item. Verification is complete and the TH-014 work-unit commit is pending; push remains pending explicit remote authorization. Merge remains a separate user-owned decision.
+Tasks TH-001 through TH-014 are implemented locally. TH-010 adds the supplied Hotel Alert demo screenshots as labelled functional reference imagery, TH-011 simplifies every carousel to side-only arrow controls, TH-012 preserves each supplied image without forced cropping, TH-013 sizes each stage from its active slide, and TH-014 prevents the parent grid from stretching cards to the tallest row item. Verification is complete and the TH-014 work-unit commit is `485c6f5`; push remains pending explicit remote authorization. Merge remains a separate user-owned decision.
 
 ## Verification evidence
 
@@ -185,7 +185,7 @@ Tasks TH-001 through TH-014 are implemented locally. TH-010 adds the supplied Ho
 - TH-010/TH-011 work-unit commit: `584a1cd` — `feat(landing): Add Hotel Alert screenshots and carousel arrows`.
 - TH-012 work-unit commit: `26403ed` — `fix(landing): Show complete carousel images`.
 - TH-013 work-unit commit: `c935bdf` — `fix(landing): Size carousel stage to active slide`.
-- TH-014 work-unit commit: pending — `fix(landing): Keep carousel cards content-sized`.
+- TH-014 work-unit commit: `485c6f5` — `fix(landing): Keep carousel cards content-sized`.
 - The current branch contains local commits ahead of `origin/jorlyscfg/feat/th-empresarial-landing`; push has not been performed because remote operation authorization for this redesign is still pending.
 
 ## Rollback boundary
@@ -194,4 +194,4 @@ Remove the files created for this feature (`.gitignore`, `src/`, `index.html`, `
 
 ## Next step
 
-The TH-014 work-unit commit is the remaining local delivery action. After it is created, the next action requiring user authorization is pushing the local branch to `origin/jorlyscfg/feat/th-empresarial-landing`; merge remains a separate user-owned decision.
+The TH-014 work-unit commit is complete locally. The next action requiring user authorization is pushing the local branch to `origin/jorlyscfg/feat/th-empresarial-landing`; merge remains a separate user-owned decision.
