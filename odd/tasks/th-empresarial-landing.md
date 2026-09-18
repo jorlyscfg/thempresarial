@@ -93,7 +93,7 @@ The page should make TH Empresarial's real service categories immediately legibl
 
 ## Progress
 
-Tasks TH-001 through TH-013 are implemented locally. TH-010 adds the supplied Hotel Alert demo screenshots as labelled functional reference imagery, TH-011 simplifies every carousel to side-only arrow controls, TH-012 preserves each supplied image without forced cropping, and TH-013 sizes each stage from its active slide. Verification is complete and the TH-013 work-unit commit is pending local commit creation; push remains pending explicit remote authorization. Merge remains a separate user-owned decision.
+Tasks TH-001 through TH-013 are implemented locally. TH-010 adds the supplied Hotel Alert demo screenshots as labelled functional reference imagery, TH-011 simplifies every carousel to side-only arrow controls, TH-012 preserves each supplied image without forced cropping, and TH-013 sizes each stage from its active slide. Verification is complete and the TH-013 work-unit commit is `c935bdf`; push remains pending explicit remote authorization. Merge remains a separate user-owned decision.
 
 ## Verification evidence
 
@@ -174,6 +174,7 @@ Tasks TH-001 through TH-013 are implemented locally. TH-010 adds the supplied Ho
 - Redesign commit includes the landing implementation, tests, 13 additional curated assets, metadata, and the task evidence update; raw `recuersos/` remains untracked and excluded.
 - TH-010/TH-011 work-unit commit: `584a1cd` — `feat(landing): Add Hotel Alert screenshots and carousel arrows`.
 - TH-012 work-unit commit: `26403ed` — `fix(landing): Show complete carousel images`.
+- TH-013 work-unit commit: `c935bdf` — `fix(landing): Size carousel stage to active slide`.
 - The current branch contains local commits ahead of `origin/jorlyscfg/feat/th-empresarial-landing`; push has not been performed because remote operation authorization for this redesign is still pending.
 
 ## Rollback boundary
@@ -182,4 +183,4 @@ Remove the files created for this feature (`.gitignore`, `src/`, `index.html`, `
 
 ## Next step
 
-Create the local TH-013 work-unit commit. The next action requiring user authorization after that is pushing the local branch to `origin/jorlyscfg/feat/th-empresarial-landing`; merge remains a separate user-owned decision.
+The TH-013 work-unit commit is complete locally. The next action requiring user authorization is pushing the local branch to `origin/jorlyscfg/feat/th-empresarial-landing`; merge remains a separate user-owned decision.
