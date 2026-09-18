@@ -329,17 +329,26 @@ describe('TH Empresarial landing page', () => {
     expect(inactiveSlideRule).toMatch(/width:\s*100%/);
   });
 
-  test('does not stretch carousel cards to the tallest card in their grid row', () => {
+  test('uses a packed multi-column fallback for desktop carousel cards', () => {
     const styles = readFileSync(resolve(process.cwd(), 'src/styles.css'), 'utf8');
     const carouselGridRule = styles.match(/\.service-carousels\s*\{[^}]*}/)?.[0] ?? '';
+    const carouselCardRule = styles.match(/\.service-carousel\s*\{[^}]*}/)?.[0] ?? '';
 
-    expect(carouselGridRule).toMatch(/align-items:\s*start/);
-    expect(carouselGridRule).toMatch(/grid-auto-rows:\s*max-content/);
+    expect(carouselGridRule).toMatch(/display:\s*block/);
+    expect(carouselGridRule).toMatch(/column-count:\s*2/);
+    expect(carouselGridRule).toMatch(/column-gap:\s*19px/);
+    expect(carouselGridRule).not.toMatch(/grid-template/);
+    expect(carouselCardRule).toMatch(/break-inside:\s*avoid/);
   });
 
-  test('uses masonry rows for the desktop carousel grid', () => {
+  test('uses one packed column without explicit sibling spacing on mobile', () => {
     const styles = readFileSync(resolve(process.cwd(), 'src/styles.css'), 'utf8');
+    const mobileStyles = styles.slice(styles.indexOf('@media (max-width: 760px)'));
+    const mobileCarouselRule = mobileStyles.match(/\.service-carousels\s*\{[^}]*}/)?.[0] ?? '';
 
-    expect(styles).toMatch(/grid-template-rows:\s*masonry/);
+    expect(mobileCarouselRule).toMatch(/display:\s*block/);
+    expect(mobileCarouselRule).toMatch(/column-count:\s*1/);
+    expect(mobileCarouselRule).toMatch(/column-gap:\s*0/);
+    expect(mobileStyles).not.toMatch(/\.service-carousel\s*\+\s*\.service-carousel/);
   });
 });
