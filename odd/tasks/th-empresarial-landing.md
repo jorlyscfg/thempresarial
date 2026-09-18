@@ -37,6 +37,7 @@ The page should make TH Empresarial's real service categories immediately legibl
 - Use only the exact WhatsApp URL supplied by the user and the two authorized trust claims.
 - Service carousels must have only manual side previous/next arrow controls (`‹` and `›`), keyboard support, visible focus, `aria-live="polite"`, active-slide feedback, complete supplied image visibility without forced cropping, stage height based on the active slide, lazy inactive images, and no forced autoplay; pagination dots must not be interactive controls.
 - The service carousel grid must keep each card's height content-driven instead of stretching every card to the tallest card in its row.
+- On desktop, the service carousel grid should use native CSS masonry rows when supported, while retaining the content-sized grid fallback.
 - Work directly on `jorlyscfg/feat/th-empresarial-landing`; commit `177011e166de0822d887e320b0e9dbd01f7a21f1` records the current work, branch push remains separate from merge.
 
 ## Design direction and DFII
@@ -68,6 +69,7 @@ The page should make TH Empresarial's real service categories immediately legibl
 12. Carousel image frames preserve the complete supplied asset without a forced crop.
 13. Carousel stages size themselves from the active slide rather than the tallest slide in the carousel.
 14. Service carousel cards preserve content-driven heights instead of stretching to the tallest card in their grid row.
+15. The desktop service carousel grid opts into native CSS masonry rows with a content-sized fallback.
 
 ## Applicable checks
 
@@ -93,10 +95,11 @@ The page should make TH Empresarial's real service categories immediately legibl
 - [x] **TH-012 — Preserve the complete supplied image inside every carousel frame** (completed by removing the forced frame crop and adding regression coverage)
 - [x] **TH-013 — Size carousel stages from the active slide** (completed by taking inactive slides out of flow and adding regression coverage)
 - [x] **TH-014 — Keep service carousel card heights content-driven** (completed with `max-content` grid rows, start alignment, and regression coverage)
+- [x] **TH-015 — Use native masonry rows for the desktop carousel grid** (completed with progressive CSS masonry and regression coverage)
 
 ## Progress
 
-Tasks TH-001 through TH-014 are implemented locally. TH-010 adds the supplied Hotel Alert demo screenshots as labelled functional reference imagery, TH-011 simplifies every carousel to side-only arrow controls, TH-012 preserves each supplied image without forced cropping, TH-013 sizes each stage from its active slide, and TH-014 prevents the parent grid from stretching cards to the tallest row item. Verification is complete and the TH-014 work-unit commit is `485c6f5`; push remains pending explicit remote authorization. Merge remains a separate user-owned decision.
+Tasks TH-001 through TH-015 are implemented locally. TH-010 adds the supplied Hotel Alert demo screenshots as labelled functional reference imagery, TH-011 simplifies every carousel to side-only arrow controls, TH-012 preserves each supplied image without forced cropping, TH-013 sizes each stage from its active slide, TH-014 prevents the parent grid from stretching cards to the tallest row item, and TH-015 opts the desktop grid into native CSS masonry with a fallback. Verification is complete and the TH-015 work-unit commit is pending; push remains pending explicit remote authorization. Merge remains a separate user-owned decision.
 
 ## Verification evidence
 
@@ -174,6 +177,13 @@ Tasks TH-001 through TH-014 are implemented locally. TH-010 adds the supplied Ho
 - TH-014 fresh verification: `rtk npm run typecheck` — `tsc --noEmit` passed.
 - TH-014 fresh verification: `rtk npm run build` — TypeScript check and Vite v8.3.0 production build passed; 16 modules transformed.
 - TH-014 fresh verification: `rtk git diff --check` — produced no output.
+- TH-015 RED: `npm test -- --run -t "uses masonry rows for the desktop carousel grid"` — observed the expected failure because `.service-carousels` did not declare `grid-template-rows: masonry`.
+- TH-015 GREEN: the same focused test passed after adding the native masonry row declaration while retaining the content-sized fallback declarations.
+- TH-015 fresh verification: `npm test -- --run` — 1 test file and 14 tests passed.
+- TH-015 fresh verification: `rtk lint` — ESLint reported `No issues found`.
+- TH-015 fresh verification: `rtk npm run typecheck` — `tsc --noEmit` passed.
+- TH-015 fresh verification: `rtk npm run build` — TypeScript check and Vite v8.3.0 production build passed; 16 modules transformed.
+- TH-015 fresh verification: `rtk git diff --check` — produced no output.
 
 ## Delivery evidence
 
@@ -186,6 +196,7 @@ Tasks TH-001 through TH-014 are implemented locally. TH-010 adds the supplied Ho
 - TH-012 work-unit commit: `26403ed` — `fix(landing): Show complete carousel images`.
 - TH-013 work-unit commit: `c935bdf` — `fix(landing): Size carousel stage to active slide`.
 - TH-014 work-unit commit: `485c6f5` — `fix(landing): Keep carousel cards content-sized`.
+- TH-015 work-unit commit: pending — `feat(landing): Use masonry carousel grid`.
 - The current branch contains local commits ahead of `origin/jorlyscfg/feat/th-empresarial-landing`; push has not been performed because remote operation authorization for this redesign is still pending.
 
 ## Rollback boundary
@@ -194,4 +205,4 @@ Remove the files created for this feature (`.gitignore`, `src/`, `index.html`, `
 
 ## Next step
 
-The TH-014 work-unit commit is complete locally. The next action requiring user authorization is pushing the local branch to `origin/jorlyscfg/feat/th-empresarial-landing`; merge remains a separate user-owned decision.
+The TH-015 work-unit commit is the remaining local delivery action. After it is created, the next action requiring user authorization is pushing the local branch to `origin/jorlyscfg/feat/th-empresarial-landing`; merge remains a separate user-owned decision.

@@ -336,4 +336,10 @@ describe('TH Empresarial landing page', () => {
     expect(carouselGridRule).toMatch(/align-items:\s*start/);
     expect(carouselGridRule).toMatch(/grid-auto-rows:\s*max-content/);
   });
+
+  test('uses masonry rows for the desktop carousel grid', () => {
+    const styles = readFileSync(resolve(process.cwd(), 'src/styles.css'), 'utf8');
+
+    expect(styles).toMatch(/grid-template-rows:\s*masonry/);
+  });
 });
