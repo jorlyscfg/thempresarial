@@ -582,7 +582,6 @@ a:focus-visible,
 
 .carousel__slide {
   display: grid;
-  grid-area: 1 / 1;
   align-content: start;
   margin: 0;
   opacity: 0;
@@ -590,6 +589,12 @@ a:focus-visible,
   transform: translateX(5px);
   transition: opacity 180ms ease, transform 180ms ease, visibility 180ms ease;
   visibility: hidden;
+}
+
+.carousel__slide:not(.is-active) {
+  position: absolute;
+  inset: 0;
+  width: 100%;
 }
 
 .carousel__slide.is-active {

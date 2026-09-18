@@ -319,4 +319,13 @@ describe('TH Empresarial landing page', () => {
     expect(imageRule).toMatch(/height:\s*auto/);
     expect(imageRule).toMatch(/object-fit:\s*contain/);
   });
+
+  test('sizes each carousel stage from the active slide instead of the tallest slide', () => {
+    const styles = readFileSync(resolve(process.cwd(), 'src/styles.css'), 'utf8');
+    const inactiveSlideRule = styles.match(/\.carousel__slide:not\(\.is-active\)\s*\{[^}]*}/)?.[0] ?? '';
+
+    expect(inactiveSlideRule).toMatch(/position:\s*absolute/);
+    expect(inactiveSlideRule).toMatch(/inset:\s*0/);
+    expect(inactiveSlideRule).toMatch(/width:\s*100%/);
+  });
 });
