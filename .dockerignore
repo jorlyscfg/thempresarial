@@ -1,0 +1,12 @@
+.git/
+.codegraph/
+node_modules/
+dist/
+recuersos/
+odd/
+coverage/
+.vite/
+.cache/
+*.log
+npm-debug.log*
+.DS_Store
