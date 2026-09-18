@@ -505,7 +505,9 @@ a:focus-visible,
 .service-carousels {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-auto-rows: max-content;
   gap: 19px;
+  align-items: start;
   margin-top: 42px;
 }
 

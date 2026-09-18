@@ -328,4 +328,12 @@ describe('TH Empresarial landing page', () => {
     expect(inactiveSlideRule).toMatch(/inset:\s*0/);
     expect(inactiveSlideRule).toMatch(/width:\s*100%/);
   });
+
+  test('does not stretch carousel cards to the tallest card in their grid row', () => {
+    const styles = readFileSync(resolve(process.cwd(), 'src/styles.css'), 'utf8');
+    const carouselGridRule = styles.match(/\.service-carousels\s*\{[^}]*}/)?.[0] ?? '';
+
+    expect(carouselGridRule).toMatch(/align-items:\s*start/);
+    expect(carouselGridRule).toMatch(/grid-auto-rows:\s*max-content/);
+  });
 });
