@@ -112,7 +112,7 @@ Tasks TH-001 through TH-005 are implemented. Owner feedback was addressed by cor
 - Historical implementation commit: `fc1ecec983bb04ca21ff6fc4c0b0d071b9892cf4` — `feat: Add TH Empresarial hospitality landing page`; it predates the current TH-004/TH-005 corrections.
 - Historical branch push: confirmed on `origin/jorlyscfg/feat/th-empresarial-landing`.
 - Current continuation commit: `177011e166de0822d887e320b0e9dbd01f7a21f1` — `feat: Rework TH Empresarial landing evidence catalog`.
-- Current continuation branch push: pending; raw `recuersos/` remains untracked and excluded.
+- Current continuation branch push: confirmed on `origin/jorlyscfg/feat/th-empresarial-landing`; raw `recuersos/` remains untracked and excluded.
 
 ## Rollback boundary
 
@@ -120,4 +120,4 @@ Remove the files created for this feature (`.gitignore`, `src/`, `index.html`, `
 
 ## Next step
 
-TH-004 and TH-005 implementation, verification, and scoped commit are complete. The next step is to push the feature branch; merge remains a separate user-owned decision.
+TH-004 and TH-005 implementation, verification, scoped commit, and branch push are complete. Merge remains a separate user-owned decision.
