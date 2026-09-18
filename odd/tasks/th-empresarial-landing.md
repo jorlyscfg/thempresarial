@@ -80,11 +80,11 @@ The page should make TH Empresarial's real service categories immediately legibl
 - [x] **TH-006 — Rebuild the landing layout around the logo-derived industrial editorial system**
 - [x] **TH-007 — Implement accessible service-specific image carousels from all unique publishable assets**
 - [x] **TH-008 — Add the accurate Hotel Alert product story and operational flow**
-- [ ] **TH-009 — Run full verification and record the redesign delivery evidence**
+- [x] **TH-009 — Run full verification and record the redesign delivery evidence**
 
 ## Progress
 
-Tasks TH-001 through TH-008 are implemented. The owner accepted a second redesign direction: compact industrial-editorial composition, logo-derived colors, service-specific carousels using every unique publishable image, and an accurate Hotel Alert platform section. TH-009 remains open for final parent verification, commit, and push. Merge remains a separate user-owned decision.
+Tasks TH-001 through TH-009 are implemented. The owner accepted a second redesign direction: compact industrial-editorial composition, logo-derived colors, service-specific carousels using every unique publishable image, and an accurate Hotel Alert platform section. The redesign is committed locally; push remains pending explicit remote authorization. Merge remains a separate user-owned decision.
 
 ## Verification evidence
 
@@ -126,13 +126,17 @@ Tasks TH-001 through TH-008 are implemented. The owner accepted a second redesig
 - TH-006–TH-008 fresh verification: `npm audit --audit-level=high` — found 0 vulnerabilities.
 - TH-006–TH-008 fresh verification: `git diff --check` — produced no output.
 - Independent candidate verification confirmed all 20 published asset references exist with declared dimensions, no private hotel capture is referenced, and no unexpected generated file exists under `recuersos/`; visual browser preview remains unavailable because the dev server hits `EMFILE`.
+- Parent spot check: `npm test -- --run` — 1 test file and 9 tests passed after task-document reconciliation.
+- CodeGraph maintenance: `codegraph sync` — synced 2 changed files; the index is current for subsequent structural queries.
 
 ## Delivery evidence
 
 - Historical implementation commit: `fc1ecec983bb04ca21ff6fc4c0b0d071b9892cf4` — `feat: Add TH Empresarial hospitality landing page`; it predates the current TH-004/TH-005 corrections.
 - Historical branch push: confirmed on `origin/jorlyscfg/feat/th-empresarial-landing`.
 - Current continuation commit: `177011e166de0822d887e320b0e9dbd01f7a21f1` — `feat: Rework TH Empresarial landing evidence catalog`.
-- Current continuation branch push: confirmed on `origin/jorlyscfg/feat/th-empresarial-landing`; raw `recuersos/` remains untracked and excluded.
+- Redesign commit: `fa342d2` — `feat: Redesign TH Empresarial landing`.
+- Redesign commit includes the landing implementation, tests, 13 additional curated assets, metadata, and the task evidence update; raw `recuersos/` remains untracked and excluded.
+- Current branch is one commit ahead of `origin/jorlyscfg/feat/th-empresarial-landing`; push has not been performed because remote operation authorization for this redesign is still pending.
 
 ## Rollback boundary
 
@@ -140,4 +144,4 @@ Remove the files created for this feature (`.gitignore`, `src/`, `index.html`, `
 
 ## Next step
 
-TH-009 remains: run the parent spot check, update the mirror, create the work-unit commit, and push the redesign branch. Merge remains a separate user-owned decision.
+Local implementation and verification are complete. Next action requiring user authorization: push `fa342d2` to `origin/jorlyscfg/feat/th-empresarial-landing`; merge remains a separate user-owned decision.
