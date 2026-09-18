@@ -10,7 +10,7 @@ The initial landing implementation still reads like a speculative concept: its c
 
 ## Why
 
-The page should make TH Empresarial's real service categories immediately legible, use the supplied images as evidence, communicate with specific Spanish copy, and give visitors a direct path to `https://wa.me/529848031616` without inventing business facts.
+The page should make TH Empresarial's real service categories immediately legible, use the supplied images as evidence, communicate with specific Spanish copy, present the Hotel Alert platform accurately, and give visitors a direct path to `https://wa.me/529848031616` without inventing business facts.
 
 ## Authorized scope
 
@@ -19,27 +19,30 @@ The page should make TH Empresarial's real service categories immediately legibl
 - Add accessible mobile navigation, metadata, Open Graph basics, responsive styling, and reduced-motion-safe CSS-first motion.
 - Add focused behavior tests and the scripts required for the specified checks.
 - Integrate a curated, privacy-safe subset of the user-supplied TH Empresarial assets from `recuersos/` and align the visual identity with the authentic logo and observed brand cues.
+- Use every unique, publishable product or installation image from `recuersos/` once in a service-specific carousel; do not repeat duplicate files as separate slides.
 - Prefer real supplied service/product imagery over fabricated dashboards, consoles, metrics, or status indicators.
+- Add an accurate Hotel Alert product section describing the local hotel-request platform, guest tablet, operational routing, configurable catalogs, service states, audit history, real-time synchronization, interruption recovery, and local Node.js/React/TypeScript/SQLite/Socket.IO deployment.
 - Write only claims supported by the supplied material or explicitly authorized by the owner; label product references and promotional graphics as references rather than proof of deployment.
-- Do not add a backend, auth, CMS, payments, speculative integrations, unverified claims, or stock-photo dependency.
+- Do not present Hotel Alert as SaaS/cloud, a native mobile app, PMS/payment integration, or guaranteed 100% offline service; do not add a backend, auth, CMS, payments, speculative integrations, unverified claims, or stock-photo dependency.
 
 ## Constraints
 
 - Product-facing copy is neutral professional Spanish; code, tests, comments, and technical artifacts are English.
-- Aesthetic: **TH Empresarial / Riviera Maya infrastructure** — high-contrast navy and cyan identity, clear white surfaces, restrained lime accents, and real service imagery.
+- Aesthetic: **Industrial editorial authority** — compact Swiss-inspired grid, logo-derived deep blue/sky blue/yellow palette, clear white surfaces, restrained borders, and real service imagery.
 - Use a distinctive display font and readable body font; do not use Inter, Roboto, Arial, or system-only defaults.
 - The visual anchor is the supplied TH Empresarial imagery and an evidence-led service catalog, not a fabricated dashboard.
-- The authentic TH Empresarial logo and blue/cyan identity take precedence over the initial authored palette where the supplied assets provide evidence.
+- The authentic TH Empresarial logo and sampled brand colors (`#144F7C`, `#9FD9F7`, `#DCDA17`, white) take precedence over the previous authored navy/cyan/lime palette.
 - Do not publish Facebook captures or operational screenshots with room numbers, queues, timestamps, or identifiers. User-supplied vendor/product graphics may be used as clearly labelled reference imagery where they explain a service category.
 - Use only the exact WhatsApp URL supplied by the user and the two authorized trust claims.
+- Service carousels must have manual previous/next controls, keyboard support, visible focus, `aria-live="polite"`, active-slide indication, stable image dimensions, lazy inactive images, and no forced autoplay.
 - Work directly on `jorlyscfg/feat/th-empresarial-landing`; commit `177011e166de0822d887e320b0e9dbd01f7a21f1` records the current work, branch push remains separate from merge.
 
 ## Design direction and DFII
 
-- Direction: **TH Empresarial / Riviera Maya infrastructure** — high-contrast navy and cyan, clear white surfaces, restrained lime accents, Syne + DM Sans, and real supplied service imagery.
+- Direction: **Industrial editorial authority** — compact Swiss-inspired grid, logo-derived deep blue/sky blue/yellow, restrained typography, dense service sections, and real supplied imagery.
 - Purpose: make the company-wide service offer legible, credible, and conversion-focused without presenting unsupported product proof.
-- Differentiation anchor: the authentic logo, observed blue/cyan identity, evidence-led service catalog, and clearly labelled hotel workflow reference rather than a fabricated dashboard.
-- Owner correction: remove synthetic consoles, metrics, and vague positioning; use the supplied materials to explain communications, IT, access control, surveillance, solar, and hotel operations.
+- Differentiation anchor: the authentic logo, brand-derived palette, service-specific image carousels, and a precise Hotel Alert product story rather than a fabricated dashboard.
+- Owner correction: remove synthetic consoles, metrics, excessive whitespace, and vague positioning; use the supplied materials to explain communications, IT, access control, surveillance, solar, and hotel operations.
 
 ## Effective strict TDD mode and runner
 
@@ -56,6 +59,8 @@ The page should make TH Empresarial's real service categories immediately legibl
 5. Trust content uses exactly the authorized Syscom distributor and Hikvision Partner claims and links to official reference pages.
 6. Motion is sparse, CSS-first, and disabled or reduced under `prefers-reduced-motion`.
 7. The specified test, lint, typecheck, and build commands exist and pass after implementation.
+8. Each publishable service category has a dedicated accessible carousel using every unique mapped image without exposing private operational screenshots.
+9. Hotel Alert is described as a local hotel-request platform connecting guest tablets with operational teams, with accurate capabilities and explicit non-claims.
 
 ## Applicable checks
 
@@ -72,10 +77,14 @@ The page should make TH Empresarial's real service categories immediately legibl
 - [x] **TH-003 — Run full verification and close the implementation receipt**
 - [x] **TH-004 — Rework the visual identity and asset mapping from owner feedback** (reopened and completed with supplied brand assets and high-contrast styling)
 - [x] **TH-005 — Replace synthetic copy and interfaces with an evidence-led service catalog** (completed with labelled supplied imagery and supported copy)
+- [x] **TH-006 — Rebuild the landing layout around the logo-derived industrial editorial system**
+- [x] **TH-007 — Implement accessible service-specific image carousels from all unique publishable assets**
+- [x] **TH-008 — Add the accurate Hotel Alert product story and operational flow**
+- [ ] **TH-009 — Run full verification and record the redesign delivery evidence**
 
 ## Progress
 
-Tasks TH-001 through TH-005 are implemented. Owner feedback was addressed by correcting contrast, replacing vague or invented copy, using the supplied imagery that explains communications, IT, electronic security, access control, surveillance, solar, and hotel operations, and removing the fabricated console/metrics. Fresh checks pass; commit `177011e166de0822d887e320b0e9dbd01f7a21f1` was created. Merge remains a separate user-owned decision.
+Tasks TH-001 through TH-008 are implemented. The owner accepted a second redesign direction: compact industrial-editorial composition, logo-derived colors, service-specific carousels using every unique publishable image, and an accurate Hotel Alert platform section. TH-009 remains open for final parent verification, commit, and push. Merge remains a separate user-owned decision.
 
 ## Verification evidence
 
@@ -106,6 +115,17 @@ Tasks TH-001 through TH-005 are implemented. Owner feedback was addressed by cor
 - Contrast spot check with `python3`: `#006b8e` on `#fbfdfe` is 5.89:1, `#45616e` on `#fbfdfe` is 6.46:1, and `#19b9e6` on `#061827` is 7.81:1; cyan is not used as light-surface body text.
 - Metadata correction: `index.html` now uses the evidence-led title and description for communication, IT, access control, video surveillance, and solar services.
 - Copy correction: the hero image caption now uses `Acceso electrónico / referencia visual` instead of an unsupported location claim.
+- TH-006–TH-008 implementation: `src/App.tsx` now uses a compact industrial-editorial layout with logo-derived colors, four service-specific carousels, and an accurate Hotel Alert section; `src/styles.css` contains the responsive visual system and reduced-motion handling; `index.html` contains the matching metadata and fonts.
+- TH-006–TH-008 asset mapping: 20 unique publishable images are referenced once — 8 control-access assets, 3 communication/IT assets, 6 surveillance assets, and 3 solar assets. Private hotel screenshots, `archivo pegado.png`, `descarga.html`, and duplicate raw files remain excluded.
+- TH-006–TH-008 TDD: focused RED was observed before the new carousel and Hotel Alert behavior; the first implementation GREEN run passed 7 tests. The correction RED run observed 2 expected failures for the Docker wording and indicator hit area; correction GREEN passed 9 tests.
+- TH-006–TH-008 correction: removed the unsupported Docker deployment wording and changed carousel indicators to retain 8px visual dots inside 44px keyboard/touch targets.
+- TH-006–TH-008 fresh verification: `npm test -- --run` — 1 test file and 9 tests passed.
+- TH-006–TH-008 fresh verification: `npm run lint` — ESLint reported `No issues found`.
+- TH-006–TH-008 fresh verification: `npm run typecheck` — `tsc --noEmit` passed.
+- TH-006–TH-008 fresh verification: `npm run build` — TypeScript check and Vite production build passed.
+- TH-006–TH-008 fresh verification: `npm audit --audit-level=high` — found 0 vulnerabilities.
+- TH-006–TH-008 fresh verification: `git diff --check` — produced no output.
+- Independent candidate verification confirmed all 20 published asset references exist with declared dimensions, no private hotel capture is referenced, and no unexpected generated file exists under `recuersos/`; visual browser preview remains unavailable because the dev server hits `EMFILE`.
 
 ## Delivery evidence
 
@@ -120,4 +140,4 @@ Remove the files created for this feature (`.gitignore`, `src/`, `index.html`, `
 
 ## Next step
 
-TH-004 and TH-005 implementation, verification, scoped commit, and branch push are complete. Merge remains a separate user-owned decision.
+TH-009 remains: run the parent spot check, update the mirror, create the work-unit commit, and push the redesign branch. Merge remains a separate user-owned decision.

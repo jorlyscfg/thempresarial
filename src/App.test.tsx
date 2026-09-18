@@ -1,5 +1,7 @@
 import type { ComponentType } from 'react';
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { afterEach, describe, expect, test } from 'vitest';
 
 type AppModule = {
@@ -29,12 +31,12 @@ describe('TH Empresarial landing page', () => {
     expect(
       screen.getByText(/empresa integradora de equipos y sistemas de comunicación, IT y seguridad electrónica/i),
     ).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /control de acceso y barreras/i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /videoporteros/i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /videovigilancia/i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /infraestructura y conectividad/i })).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /energía solar/i })).toBeInTheDocument();
-    expect(screen.getByText(/Acceso electrónico \/ referencia visual/i)).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: /galería de control de acceso/i })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: /galería de comunicación e IT/i })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: /galería de videovigilancia/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /infraestructura e IT/i })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: /galería de energía solar/i })).toBeInTheDocument();
+    expect(screen.getByText(/Accesos electrónicos sin contacto/i)).toBeInTheDocument();
     expect(screen.getAllByText(/alimentos y bebidas/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/room service/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/Distribuidor autorizado de Syscom/i)).toBeInTheDocument();
@@ -84,7 +86,7 @@ describe('TH Empresarial landing page', () => {
         src: '/assets/th-empresarial/video-surveillance-kit.jpg',
       },
       {
-        name: /barrera vehicular/i,
+        name: /^Barrera vehicular en un acceso$/i,
         src: '/assets/th-empresarial/vehicle-barrier-access.jpg',
       },
       {
@@ -102,7 +104,7 @@ describe('TH Empresarial landing page', () => {
     ];
 
     suppliedAssets.forEach(({ name, src }) => {
-      expect(screen.getByRole('img', { name })).toHaveAttribute('src', src);
+      expect(screen.getByRole('img', { name, hidden: true })).toHaveAttribute('src', src);
     });
   });
 
@@ -144,5 +146,112 @@ describe('TH Empresarial landing page', () => {
       'aria-expanded',
       'false',
     );
+  });
+
+  test('provides manual service-specific carousels with active slide feedback', () => {
+    const App = loadApp();
+
+    expect(App).not.toBeNull();
+    if (!App) return;
+
+    render(<App />);
+
+    const accessCarousel = screen.getByRole('region', { name: /galería de control de acceso/i });
+    expect(within(accessCarousel).getByRole('button', { name: /imagen anterior/i })).toBeInTheDocument();
+    expect(within(accessCarousel).getByRole('button', { name: /imagen siguiente/i })).toBeInTheDocument();
+    expect(within(accessCarousel).getByRole('status')).toHaveAttribute('aria-live', 'polite');
+    expect(within(accessCarousel).getByRole('img', { name: /barrera vehicular/i })).toHaveAttribute(
+      'loading',
+      'eager',
+    );
+
+    fireEvent.click(within(accessCarousel).getByRole('button', { name: /imagen siguiente/i }));
+
+    expect(within(accessCarousel).getByRole('status')).toHaveTextContent(/2 de/i);
+    expect(within(accessCarousel).getByRole('button', { name: /ver imagen 2 de/i })).toHaveAttribute(
+      'aria-current',
+      'true',
+    );
+    expect(screen.getByRole('region', { name: /galería de comunicación e IT/i })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: /galería de videovigilancia/i })).toBeInTheDocument();
+    expect(screen.getByRole('region', { name: /galería de energía solar/i })).toBeInTheDocument();
+  });
+
+  test('explains Hotel Alert as a local request platform with supported capabilities', () => {
+    const App = loadApp();
+
+    expect(App).not.toBeNull();
+    if (!App) return;
+
+    render(<App />);
+
+    expect(screen.getByRole('heading', { name: /Hotel Alert/i })).toBeInTheDocument();
+    expect(screen.getByText(/plataforma local de solicitudes hoteleras/i)).toBeInTheDocument();
+    expect(screen.getByText(/tabletas de habitación/i)).toBeInTheDocument();
+    expect(screen.getByText(/room service, alimentos y bebidas, limpieza, toallas, mantenimiento, desayunos y bebidas/i)).toBeInTheDocument();
+    expect(screen.getByText(/ROOM, AREA y ADMIN/i)).toBeInTheDocument();
+    expect(screen.getByText(/Node\.js, React, TypeScript, SQLite y Socket\.IO/i)).toBeInTheDocument();
+    expect(screen.queryByText(/SaaS|cloud|PMS|pagos|100% offline|latencia garantizada/i)).not.toBeInTheDocument();
+  });
+
+  test('does not publish unsupported Docker deployment wording', () => {
+    const App = loadApp();
+
+    expect(App).not.toBeNull();
+    if (!App) return;
+
+    render(<App />);
+
+    expect(screen.getByText(/Node\.js, React, TypeScript, SQLite y Socket\.IO/i)).toBeInTheDocument();
+    expect(screen.queryByText(/Docker/i)).not.toBeInTheDocument();
+  });
+
+  test('gives carousel indicators a comfortable accessible hit area', () => {
+    const App = loadApp();
+
+    expect(App).not.toBeNull();
+    if (!App) return;
+
+    render(<App />);
+
+    const carousel = screen.getByRole('region', { name: /galería de control de acceso/i });
+    const indicators = within(carousel).getAllByRole('button', { name: /ver imagen/i });
+
+    expect(indicators.length).toBeGreaterThan(1);
+    indicators.forEach((indicator) => {
+      expect(indicator).toHaveAttribute('type', 'button');
+    });
+
+    const styles = readFileSync(resolve(process.cwd(), 'src/styles.css'), 'utf8');
+    const indicatorRule = styles.match(/\.carousel__indicator\s*\{[^}]*}/)?.[0] ?? '';
+    const indicatorDotRule = styles.match(/\.carousel__indicator::before\s*\{[^}]*}/)?.[0] ?? '';
+
+    expect(indicatorRule).toMatch(/min-width:\s*44px/);
+    expect(indicatorRule).toMatch(/min-height:\s*44px/);
+    expect(indicatorDotRule).toMatch(/width:\s*8px/);
+    expect(indicatorDotRule).toMatch(/height:\s*8px/);
+
+    indicators[1].focus();
+    expect(indicators[1]).toHaveFocus();
+    fireEvent.click(indicators[1]);
+    expect(within(carousel).getByRole('status')).toHaveTextContent(/2 de/i);
+  });
+
+  test('keeps carousel controls keyboard reachable and gives the live region an accessible contract', () => {
+    const App = loadApp();
+
+    expect(App).not.toBeNull();
+    if (!App) return;
+
+    render(<App />);
+
+    const carousel = screen.getByRole('region', { name: /galería de energía solar/i });
+    expect(carousel).toHaveAttribute('tabindex', '0');
+
+    fireEvent.keyDown(carousel, { key: 'ArrowRight' });
+
+    expect(within(carousel).getByRole('status')).toHaveTextContent(/2 de/i);
+    expect(within(carousel).getByRole('button', { name: /imagen anterior/i })).toHaveAttribute('type', 'button');
+    expect(within(carousel).getByRole('button', { name: /imagen siguiente/i })).toHaveAttribute('type', 'button');
   });
 });
