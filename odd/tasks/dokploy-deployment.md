@@ -59,6 +59,7 @@ Dokploy needs a reproducible Compose application whose `web` service builds the 
 - [x] **DP-003 — Document Dokploy deployment, validation, and rollback**
 - [ ] **DP-004 — Run the complete local verification suite and record evidence**
 - [x] **DP-005 — Add the Dokploy Docker Compose entrypoint**
+- [ ] **DP-006 — Keep build-time dev dependencies available under Dokploy**
 
 ## Applicable checks
 
@@ -73,7 +74,7 @@ Dokploy needs a reproducible Compose application whose `web` service builds the 
 
 ## Progress
 
-DP-001 through DP-003 and the clarified DP-005 Compose entrypoint are implemented locally. Existing application files and the untracked `recuersos/` directory were inspected only for repository state; no product source or raw assets are part of this change. DP-004 remains partially verified: Compose configuration and the npm checks and diff check pass, while Docker image build and container smoke testing are blocked by local Docker socket permissions.
+DP-001 through DP-003 and the clarified DP-005 Compose entrypoint are implemented locally. Dokploy deployment exposed a new DP-006 issue: its production build environment caused `npm ci` to omit devDependencies, so the Docker build could not find `tsc`. The DP-006 Dockerfile fix is implemented and locally verified under `NODE_ENV=production`; DP-004 and DP-006 remain open until the corrected image builds and the Compose smoke test passes. Existing application files and the untracked `recuersos/` directory were inspected only for repository state; no product source or raw assets are part of this change.
 
 ## Verification evidence
 
@@ -84,6 +85,8 @@ DP-001 through DP-003 and the clarified DP-005 Compose entrypoint are implemente
 - `git diff --check` — exit 0; no whitespace errors.
 - `docker compose config` — exit 0; resolved one `web` service, Dockerfile `runtime` target, exposed container port 80, and external `dokploy-network` without a host-port mapping.
 - `docker compose build web` — blocked before build by `permission denied` connecting to `/var/run/docker.sock`; Compose also reported that Buildx is not installed. No image build or container smoke test was observed.
+- `NODE_ENV=production npm ci --include=dev && test -x node_modules/.bin/tsc && npm run build` — exit 0; 237 packages installed, `tsc` was present, and Vite transformed 16 modules successfully.
+- Dokploy deployment reproduction — `npm ci` added only 3 production packages, then `npm run build` failed with `sh: tsc: not found`; `typescript` is a declared devDependency required by the existing build script.
 - Docker is installed at `/usr/bin/docker`, but `docker build -t th-empresarial-dokploy:local .` could not reach `/var/run/docker.sock` because of permission denied. No image build or container smoke test was observed.
 - Prior pre-commit scope inspection showed only the six intended deployment/task files plus the pre-existing untracked `recuersos/` directory; `recuersos/` remained untouched.
 - Current uncommitted scope is limited to `DOKPLOY.md`, `docker-compose.yml`, and this task record; `Dockerfile`, application source, and `recuersos/` remain untouched.
@@ -97,4 +100,4 @@ This task produces local deployment configuration only. No remote Dokploy action
 
 ## Next step
 
-Resolve local Docker daemon socket access, then rerun the Compose image build and bounded `/healthz` smoke test to close DP-004; leave verification unchecked while Docker remains unavailable. No remote Dokploy action is pending in this local-only task.
+Apply the DP-006 build-stage dependency fix, rerun the Compose image build and bounded `/healthz` smoke test, then close DP-004 and DP-006 only from observed results. No remote Dokploy action is pending in this local-only task.

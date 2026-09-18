@@ -5,7 +5,8 @@ FROM node:22-alpine AS build
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci
+# Dokploy may use production npm settings, but the Vite build needs devDependencies.
+RUN npm ci --include=dev
 
 COPY index.html vite.config.ts tsconfig.json eslint.config.js ./
 COPY src ./src
