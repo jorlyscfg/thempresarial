@@ -2,6 +2,9 @@
 
 FROM node:22-alpine AS build
 
+# Keep the build-stage user explicit so Dokploy can write Vite's output under /app.
+USER root
+
 WORKDIR /app
 
 COPY package.json package-lock.json ./

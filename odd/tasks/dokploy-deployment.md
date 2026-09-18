@@ -59,7 +59,8 @@ Dokploy needs a reproducible Compose application whose `web` service builds the 
 - [x] **DP-003 — Document Dokploy deployment, validation, and rollback**
 - [ ] **DP-004 — Run the complete local verification suite and record evidence**
 - [x] **DP-005 — Add the Dokploy Docker Compose entrypoint**
-- [ ] **DP-006 — Keep build-time dev dependencies available under Dokploy**
+- [x] **DP-006 — Keep build-time dev dependencies available under Dokploy**
+- [ ] **DP-007 — Restore build-stage write access for Vite output**
 
 ## Applicable checks
 
@@ -74,7 +75,7 @@ Dokploy needs a reproducible Compose application whose `web` service builds the 
 
 ## Progress
 
-DP-001 through DP-003 and the clarified DP-005 Compose entrypoint are implemented locally. Dokploy deployment exposed a new DP-006 issue: its production build environment caused `npm ci` to omit devDependencies, so the Docker build could not find `tsc`. The DP-006 Dockerfile fix is implemented and locally verified under `NODE_ENV=production`; DP-004 and DP-006 remain open until the corrected image builds and the Compose smoke test passes. Existing application files and the untracked `recuersos/` directory were inspected only for repository state; no product source or raw assets are part of this change.
+DP-001 through DP-003 and the clarified DP-005 Compose entrypoint are implemented locally. DP-006 is implemented: the prior `npm ci --include=dev` fix preserves build-time devDependencies, and the latest Dokploy reproduction reached TypeScript and Vite successfully. DP-007 is implemented in the Dockerfile by explicitly running the `node:22-alpine AS build` stage as root before `/app` is created, but its image-level verification remains pending because the local Docker daemon socket is unavailable. DP-004 and DP-007 remain open until the corrected image builds and the Compose smoke test passes. Existing application files and the untracked `recuersos/` directory were inspected only for repository state; no product source or raw assets are part of this change.
 
 ## Verification evidence
 
@@ -87,9 +88,18 @@ DP-001 through DP-003 and the clarified DP-005 Compose entrypoint are implemente
 - `docker compose build web` — blocked before build by `permission denied` connecting to `/var/run/docker.sock`; Compose also reported that Buildx is not installed. No image build or container smoke test was observed.
 - `NODE_ENV=production npm ci --include=dev && test -x node_modules/.bin/tsc && npm run build` — exit 0; 237 packages installed, `tsc` was present, and Vite transformed 16 modules successfully.
 - Dokploy deployment reproduction — `npm ci` added only 3 production packages, then `npm run build` failed with `sh: tsc: not found`; `typescript` is a declared devDependency required by the existing build script.
+- Latest Dokploy deployment reproduction — `npm ci --include=dev` was cached and succeeded; `npm run build` found TypeScript and Vite started, then `vite:prepare-out-dir` failed with `EACCES: permission denied, mkdir '/app/dist'`. The failing Dockerfile instruction was `RUN npm run build` in the `node:22-alpine AS build` stage. The proven failure is that the build process lacks write permission to `/app` when Vite creates `/app/dist`; post-fix image verification remains pending.
+- DP-007 source fix — `Dockerfile` now declares `USER root` before `WORKDIR /app` in the build stage, explicitly allowing the Vite build process to create `/app/dist`; the Nginx runtime stage and its behavior are unchanged. No broad writable permissions were added.
 - Docker is installed at `/usr/bin/docker`, but `docker build -t th-empresarial-dokploy:local .` could not reach `/var/run/docker.sock` because of permission denied. No image build or container smoke test was observed.
 - Prior pre-commit scope inspection showed only the six intended deployment/task files plus the pre-existing untracked `recuersos/` directory; `recuersos/` remained untouched.
-- Current uncommitted scope is limited to `DOKPLOY.md`, `docker-compose.yml`, and this task record; `Dockerfile`, application source, and `recuersos/` remain untouched.
+- `npm test -- --run` — exit 0; 1 test file and 14 tests passed.
+- `npm run lint` — exit 0; ESLint reported no issues.
+- `npm run typecheck` — exit 0; `tsc --noEmit` passed.
+- `npm run build` — exit 0; TypeScript passed and Vite transformed 16 modules successfully.
+- `docker compose config` — exit 0; resolved the single `web` service, `runtime` target, container port 80, and external `dokploy-network`.
+- `git diff --check` — exit 0; no whitespace errors.
+- `docker info` — blocked by `permission denied while trying to connect to the docker API at unix:///var/run/docker.sock`; `docker compose build web` was not attempted because the daemon was unavailable, so no image build or `/healthz` smoke test was observed.
+- Current uncommitted tracked scope is limited to `Dockerfile` and this task record; the pre-existing untracked `recuersos/` directory remains untouched.
 - Local work-unit commit: `a46cc96` (`build(deploy): Prepare Vite app for Dokploy`).
 - Prior task-record update commit: `59ccc67` (`docs(odd): Record Dokploy delivery`).
 - Clarified Compose work-unit commit: `5936b81` (`build(deploy): Add Dokploy Compose entrypoint`).
@@ -101,4 +111,4 @@ This task produces local deployment configuration only. No remote Dokploy action
 
 ## Next step
 
-Apply the DP-006 build-stage dependency fix, rerun the Compose image build and bounded `/healthz` smoke test, then close DP-004 and DP-006 only from observed results. No remote Dokploy action is pending in this local-only task.
+When local Docker daemon access is available, run `docker compose build web` and the bounded `/healthz` smoke test, then close DP-004 and DP-007 only from observed image results. No remote Dokploy action was performed, and the remote Dokploy image is not claimed fixed without that image-build evidence.
