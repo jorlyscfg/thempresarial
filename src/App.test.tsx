@@ -15,7 +15,7 @@ const loadApp = (): ComponentType | null => {
 afterEach(cleanup);
 
 describe('TH Empresarial landing page', () => {
-  test('presents the hospitality offer, conversion path, and partner proof', async () => {
+  test('presents an evidence-led service offer and conversion path', () => {
     const App = loadApp();
 
     expect(App).not.toBeNull();
@@ -23,8 +23,18 @@ describe('TH Empresarial landing page', () => {
 
     render(<App />);
 
-    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(/claridad/i);
-    expect(screen.getByRole('heading', { name: /comunicación para hoteles/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(
+      /comunicación, IT y seguridad electrónica/i,
+    );
+    expect(
+      screen.getByText(/empresa integradora de equipos y sistemas de comunicación, IT y seguridad electrónica/i),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /control de acceso y barreras/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /videoporteros/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /videovigilancia/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /infraestructura y conectividad/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /energía solar/i })).toBeInTheDocument();
+    expect(screen.getByText(/Acceso electrónico \/ referencia visual/i)).toBeInTheDocument();
     expect(screen.getAllByText(/alimentos y bebidas/i).length).toBeGreaterThan(0);
     expect(screen.getAllByText(/room service/i).length).toBeGreaterThan(0);
     expect(screen.getByText(/Distribuidor autorizado de Syscom/i)).toBeInTheDocument();
@@ -44,6 +54,69 @@ describe('TH Empresarial landing page', () => {
       'href',
       'https://www.hikvision.com/en/Partners/channel-partners/hik-partner-pro/',
     );
+  });
+
+  test('uses the authentic logo and the supplied service imagery', () => {
+    const App = loadApp();
+
+    expect(App).not.toBeNull();
+    if (!App) return;
+
+    render(<App />);
+
+    const logos = screen.getAllByRole('img', { name: 'Logotipo de TH Empresarial' });
+    expect(logos.length).toBeGreaterThanOrEqual(2);
+    logos.forEach((logo) => {
+      expect(logo).toHaveAttribute('src', '/assets/th-empresarial/th-empresarial-logo.png');
+    });
+
+    const suppliedAssets = [
+      {
+        name: /accesos electrónicos sin contacto/i,
+        src: '/assets/th-empresarial/access-control-reference.jpeg',
+      },
+      {
+        name: /videoporteros modulares Hikvision/i,
+        src: '/assets/th-empresarial/video-doorphones-reference.jpeg',
+      },
+      {
+        name: /kit de videovigilancia HD/i,
+        src: '/assets/th-empresarial/video-surveillance-kit.jpg',
+      },
+      {
+        name: /barrera vehicular/i,
+        src: '/assets/th-empresarial/vehicle-barrier-access.jpg',
+      },
+      {
+        name: /equipo de grabación/i,
+        src: '/assets/th-empresarial/surveillance-recorder.jpg',
+      },
+      {
+        name: /gráfica de energía solar/i,
+        src: '/assets/th-empresarial/solar-energy-reference.jpg',
+      },
+      {
+        name: /montajes solares/i,
+        src: '/assets/th-empresarial/solar-mounting-reference.jpg',
+      },
+    ];
+
+    suppliedAssets.forEach(({ name, src }) => {
+      expect(screen.getByRole('img', { name })).toHaveAttribute('src', src);
+    });
+  });
+
+  test('does not publish the fabricated console or operational metrics', () => {
+    const App = loadApp();
+
+    expect(App).not.toBeNull();
+    if (!App) return;
+
+    render(<App />);
+
+    expect(
+      screen.queryByText(/TH\s*\/\s*HOTEL SIGNAL|Signal 01|Signal \/ 03|active requests|request flow|ROOM CONSOLE|304|208|Sistema conectado/i),
+    ).not.toBeInTheDocument();
   });
 
   test('opens and closes the mobile navigation from its accessible button', async () => {
