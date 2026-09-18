@@ -89,7 +89,7 @@ The page should make TH Empresarial's real service categories immediately legibl
 
 ## Progress
 
-Tasks TH-001 through TH-011 are implemented locally. TH-010 adds the supplied Hotel Alert demo screenshots as labelled functional reference imagery, and TH-011 simplifies every carousel to side-only arrow controls. Verification is complete; the new work-unit commit is pending. Push remains pending explicit remote authorization. Merge remains a separate user-owned decision.
+Tasks TH-001 through TH-011 are implemented locally. TH-010 adds the supplied Hotel Alert demo screenshots as labelled functional reference imagery, and TH-011 simplifies every carousel to side-only arrow controls. Verification is complete and the work-unit commit is `584a1cd`; push remains pending explicit remote authorization. Merge remains a separate user-owned decision.
 
 ## Verification evidence
 
@@ -152,7 +152,8 @@ Tasks TH-001 through TH-011 are implemented locally. TH-010 adds the supplied Ho
 - Current continuation commit: `177011e166de0822d887e320b0e9dbd01f7a21f1` — `feat: Rework TH Empresarial landing evidence catalog`.
 - Redesign commit: `fa342d2` — `feat: Redesign TH Empresarial landing`.
 - Redesign commit includes the landing implementation, tests, 13 additional curated assets, metadata, and the task evidence update; raw `recuersos/` remains untracked and excluded.
-- Current branch is one commit ahead of `origin/jorlyscfg/feat/th-empresarial-landing`; push has not been performed because remote operation authorization for this redesign is still pending.
+- TH-010/TH-011 work-unit commit: `584a1cd` — `feat(landing): Add Hotel Alert screenshots and carousel arrows`.
+- The current branch contains local commits ahead of `origin/jorlyscfg/feat/th-empresarial-landing`; push has not been performed because remote operation authorization for this redesign is still pending.
 
 ## Rollback boundary
 
@@ -160,4 +161,4 @@ Remove the files created for this feature (`.gitignore`, `src/`, `index.html`, `
 
 ## Next step
 
-Local implementation and verification are complete. Next action: create the TH-010/TH-011 work-unit commit and record its identity here; push remains a separate user-owned remote operation and merge remains a separate user-owned decision.
+Local implementation, verification, and the TH-010/TH-011 work-unit commit are complete. Next action requiring user authorization: push the local branch to `origin/jorlyscfg/feat/th-empresarial-landing`; merge remains a separate user-owned decision.
