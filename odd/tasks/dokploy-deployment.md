@@ -2,22 +2,22 @@
 
 ## Objective
 
-Prepare the existing Vite + React static landing page for a production Docker deployment on Dokploy.
+Prepare the existing Vite + React static landing page for a production Docker Compose deployment on Dokploy from GitHub.
 
 ## Problem
 
-The repository currently builds a static `dist/` directory but has no deployment container, health endpoint, Nginx configuration, or Dokploy handoff documentation.
+The repository builds a static `dist/` directory and has a Dockerfile runtime, but Dokploy's clarified GitHub-provider flow also requires a root Compose entrypoint at the configured Compose Path.
 
 ## Why
 
-Dokploy needs a reproducible Dockerfile build that serves the compiled frontend through Nginx on port 80, with a JavaScript-independent health check and a documented rollback path.
+Dokploy needs a reproducible Compose application whose `web` service builds the existing Dockerfile `runtime` target, serves the compiled frontend through Nginx on container port 80, joins Dokploy's external network, and retains a JavaScript-independent health check and documented rollback path.
 
 ## Authorized scope
 
-- Add only the Dockerfile, Nginx configuration, static health response, Docker build exclusions, Dokploy runbook, and this ODD task record.
+- Add only the Dockerfile, root `docker-compose.yml`, Nginx configuration, static health response, Docker build exclusions, Dokploy runbook, and this ODD task record.
 - Preserve the existing Vite + React product behavior and copy.
 - Do not deploy remotely, push, merge, open a pull request, or modify or stage `recuersos/`.
-- Do not add a Compose file or application services that the static frontend does not require.
+- Keep the Compose file to the single required `web` service; do not add application services that the static frontend does not require.
 
 ## Constraints
 
@@ -26,7 +26,15 @@ Dokploy needs a reproducible Dockerfile build that serves the compiled frontend 
 - Serve the SPA from `/usr/share/nginx/html` on port 80 with `/index.html` fallback.
 - Keep `/healthz` directly resolvable, cache-free, and independent of application JavaScript.
 - Run as the Nginx non-root user when compatible with port 80 and the base image.
+- Use `web` as the Dokploy service name, advertise container port 80 without a fixed host-port mapping, attach to the external `dokploy-network`, and use a production restart policy.
+- Do not set `container_name`, hardcode a domain, add secrets, or change the existing Dockerfile or application source without a concrete Compose compatibility reason.
 - Keep all generated technical artifacts in English.
+
+## Clarification and official documentation evidence
+
+- User clarification: Dokploy is configured with GitHub as the provider, Compose Type `Docker Compose`, and root Compose Path `./docker-compose.yml`; domain configuration targets service `web` on container port 80.
+- Official Dokploy Compose tutorial: [Docker Compose example](https://github.com/dokploy/website/blob/main/apps/docs/content/docs/core/docker-compose/example.mdx) recommends the external `dokploy-network`, no fixed host-port mapping, and no `container_name`.
+- Official Dokploy GitHub tutorial evidence supplied with the clarification sets Compose Path to `./docker-compose.yml`.
 
 ## Acceptance criteria
 
@@ -34,8 +42,9 @@ Dokploy needs a reproducible Dockerfile build that serves the compiled frontend 
 2. Nginx serves the compiled site, supports SPA fallback, and serves `/healthz` without cache headers.
 3. `public/healthz` is included in the Vite output.
 4. `.dockerignore` excludes repository metadata, generated/build caches, logs, raw `recuersos/`, and non-build task context without excluding current build inputs.
-5. `DOKPLOY.md` documents exact Dockerfile settings, port 80, no required environment variables, deployment/redeploy, health verification, local validation, official documentation, and rollback guidance.
-6. The required npm checks, Docker validation when available, and `git diff --check` produce observed results without staging or committing changes.
+5. Root `docker-compose.yml` defines only `web`, builds `Dockerfile` target `runtime` from `.`, advertises container port 80 without `80:80`, uses the external `dokploy-network`, preserves `/healthz`, and has a production restart policy without `container_name`, domains, secrets, or extra services.
+6. `DOKPLOY.md` documents the GitHub provider, Docker Compose type and path, `web` service, port 80, existing Dockerfile `runtime` target, no required environment variables, deployment/redeploy, health verification, local validation, official documentation, and rollback guidance.
+7. The required npm checks, Compose validation/build and `/healthz` smoke test when Docker is available, and `git diff --check` produce observed results without staging or committing changes.
 
 ## Effective strict TDD mode and runner
 
@@ -49,6 +58,7 @@ Dokploy needs a reproducible Dockerfile build that serves the compiled frontend 
 - [x] **DP-002 — Add the static health response and build-context exclusions**
 - [x] **DP-003 — Document Dokploy deployment, validation, and rollback**
 - [ ] **DP-004 — Run the complete local verification suite and record evidence**
+- [x] **DP-005 — Add the Dokploy Docker Compose entrypoint**
 
 ## Applicable checks
 
@@ -57,12 +67,13 @@ Dokploy needs a reproducible Dockerfile build that serves the compiled frontend 
 - `npm run typecheck`
 - `npm run build`
 - `git diff --check`
-- `docker build -t th-empresarial-dokploy:local .` when Docker is installed
-- Bounded container smoke test against `/healthz` when the image builds
+- `docker compose config`
+- `docker compose build web` when Docker daemon access is available
+- Bounded Compose container smoke test against `/healthz` when the image builds
 
 ## Progress
 
-DP-001 through DP-003 are implemented locally. Existing application files and the untracked `recuersos/` directory were inspected only for repository state; no product source or raw assets are part of this change. DP-004 is partially verified: the npm checks and diff check pass, while Docker access is blocked by the local Docker socket permissions.
+DP-001 through DP-003 and the clarified DP-005 Compose entrypoint are implemented locally. Existing application files and the untracked `recuersos/` directory were inspected only for repository state; no product source or raw assets are part of this change. DP-004 remains partially verified: Compose configuration and the npm checks and diff check pass, while Docker image build and container smoke testing are blocked by local Docker socket permissions.
 
 ## Verification evidence
 
@@ -71,14 +82,18 @@ DP-001 through DP-003 are implemented locally. Existing application files and th
 - `npm run typecheck` — exit 0; `tsc --noEmit` passed.
 - `npm run build` — exit 0; Vite v8.3.0 transformed 16 modules and emitted `dist/healthz` with body `ok`.
 - `git diff --check` — exit 0; no whitespace errors.
+- `docker compose config` — exit 0; resolved one `web` service, Dockerfile `runtime` target, exposed container port 80, and external `dokploy-network` without a host-port mapping.
+- `docker compose build web` — blocked before build by `permission denied` connecting to `/var/run/docker.sock`; Compose also reported that Buildx is not installed. No image build or container smoke test was observed.
 - Docker is installed at `/usr/bin/docker`, but `docker build -t th-empresarial-dokploy:local .` could not reach `/var/run/docker.sock` because of permission denied. No image build or container smoke test was observed.
-- Pre-commit scope inspection showed only the six intended deployment/task files plus the pre-existing untracked `recuersos/` directory; `recuersos/` remained untouched.
+- Prior pre-commit scope inspection showed only the six intended deployment/task files plus the pre-existing untracked `recuersos/` directory; `recuersos/` remained untouched.
+- Current uncommitted scope is limited to `DOKPLOY.md`, `docker-compose.yml`, and this task record; `Dockerfile`, application source, and `recuersos/` remain untouched.
 - Local work-unit commit: `a46cc96` (`build(deploy): Prepare Vite app for Dokploy`).
+- Prior task-record update commit: `59ccc67` (`docs(odd): Record Dokploy delivery`).
 
 ## Delivery and rollback boundary
 
-This task produces local deployment configuration only. No remote Dokploy action, push, merge, or pull request is authorized; the local work-unit commit is part of the authorized implementation. Rollback is documented as selecting the previous known-good Dokploy deployment or redeploying its source revision.
+This task produces local deployment configuration only. No remote Dokploy action is part of this task; the local work-unit commit is part of the authorized implementation, while push, merge, and pull request decisions remain separate. Rollback is documented as selecting the previous known-good Dokploy deployment or redeploying its source revision.
 
 ## Next step
 
-Resolve local Docker daemon socket access, then rerun the image build and bounded `/healthz` smoke test to close DP-004. No remote Dokploy action is pending in this local-only task.
+Resolve local Docker daemon socket access, then rerun the Compose image build and bounded `/healthz` smoke test to close DP-004; leave verification unchecked while Docker remains unavailable. No remote Dokploy action is pending in this local-only task.
